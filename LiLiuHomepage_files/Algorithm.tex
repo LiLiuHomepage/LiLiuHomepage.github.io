@@ -1,0 +1,149 @@
+
+\documentclass[10pt,journal,cspaper,compsoc,onecolumn]{IEEEtran}
+%\documentclass[9pt,journal,draftcls,letterpaper,onecolumn]{IEEEtran}
+\usepackage[usenames]{color}
+\definecolor{DarkBlue}{rgb}{0.0,0.08,0.6}
+\definecolor{DarkRed}{rgb}{0.6,0.00,0.08}
+\definecolor{DarkGreen}{rgb}{0.0,0.6,0.08}
+\usepackage{lscape}
+\usepackage[table]{xcolor}
+\usepackage{amssymb}
+\usepackage{makecell}
+\usepackage{multirow}
+\usepackage{rotating}
+\usepackage{array}
+\usepackage{cite}
+\usepackage{graphicx}
+ \usepackage{psfrag}
+\usepackage{subfigure}
+\usepackage{url}
+\usepackage{amsmath}
+\usepackage{epsfig}
+\usepackage{verbatim}
+\usepackage{bbding}
+\usepackage[ruled]{algorithm2e}
+\usepackage[top=0.5in,bottom=0.5in,left=0.4in,textwidth=7.7in]{geometry}
+
+\usepackage[pagebackref=true,breaklinks=true,linkcolor=red,anchorcolor=blue,            citecolor=green,letterpaper=true,colorlinks,bookmarks=false]{hyperref}
+
+\ifCLASSINFOpdf
+
+\else
+
+\fi
+
+
+% correct bad hyphenation here
+\hyphenation{op-tical net-works semi-conduc-tor}
+
+
+\begin{document}
+
+
+\title{Deep Convolutional Neural Networks for Generic Object Detection: A Survey}
+
+
+
+% ~\IEEEmembership{Student Member,~IEEE,}
+\author{Li~Liu, Wanli Ouyang, Paul Fieguth, Xiaogang Wang, Sven Dickinson, Matti Pietik\"{a}inen
+\IEEEcompsocitemizethanks{\IEEEcompsocthanksitem Li Liu is with the Information System Engineering Key Lab, College of Information System and Management, National University of Defense Technology, China. She is also a post doctor researcher at the Machine Vision Group, University of Oulu, Finland.
+email: li.liu@oulu.fi
+\IEEEcompsocthanksitem Matti Pietik\"{a}inen are with Machine Vision Group, University of Oulu, Finland.
+email: \{matti.pietikainen\}@ee.oulu.fi
+\IEEEcompsocthanksitem Wanli Ouyang and Xiaogang Wang are with the Department of Electronic Engineering, Chinese University of Hong Kong, China.
+email: wanli.ouyang@gmail.com; xgwang@ee.cuhk.edu.hk}\protect\\
+}
+
+\markboth{IEEE Transactions on PAMI}%
+{Liu \MakeLowercase{\textit{et al.}}: MRELBP}
+
+\IEEEcompsoctitleabstractindextext{
+\begin{abstract}
+%Generic object detection, aiming at detecting instances of  objects from a number of predefined everyday categories in natural images, is one of the most fundamental and challenging problem in computer vision and has attracted a lot of focused research. Difficulties in general object detection can arise due to a large number of object categories in real world applications, complex background, different degrees of appearance variations caused by noise, illumination, viewpoints and scale, deformations in distinct object classes, occlusions, limited computational capabilities and storage space and so on. Recently deep learning techniques have emerged as powerful methods
+%for learning feature representations directly from data in unorthodox ways. It has given new life to the field of object detection, which has seen only incremental increases in accuracy and efficiency in the past few decades. In the past few years, deep learning has brought many breakthroughs in the field of generic object detection. In this paper we aim to provide a comprehensive survey of the recent advances in this field. Covering 250 publications we survey (i) problem illustration: key concepts, tasks and challenges, (i) problem description: key tasks and challenges; (ii) core techniques: existing techniques are categorized as either stagewise or unified and sub-problems are highlighted including region proposals, appearance features, segmentation and classification......; (iii) evaluation issues: approaches, metrics, standard datasets, and state of the art results. Open challenges and directions for future research are discussed.
+
+
+
+\end{abstract}
+
+
+
+\begin{IEEEkeywords}
+Object detection, deep learning, convolutional neural networks, object classification
+\end{IEEEkeywords}}
+
+\maketitle
+%\IEEEdisplaynotcompsoctitleabstractindextext
+%\IEEEpeerreviewmaketitle
+
+
+
+\section{Datasets and Performance Evaluation}
+\label{Sec:Evaluations}
+\begin{algorithm}[H]
+  \SetLine
+  \KwIn{$\{(b_j,p_j)\}_{j=1}^M$: $M$ predictions for image $\textbf{I}$ for object class $c$, \\
+  $\quad\quad\quad\quad\quad\quad\quad\quad\quad$ranked by the confidence $p_j$ in decreasing order;
+  \\ $\quad\quad\quad\mathcal{B}=\{b^g_k\}_{k=1}^K$: ground truth BBs on image $\textbf{I}$ for object class $c$;}
+  \KwOut{$\textbf{\emph{a}}\in\mathbb{R}^{M}$: a binary vector indicating each $(b_j,p_j)$ to be a TP or FP.}
+
+  Initialize $\textbf{\emph{a}} = 0$;
+
+   \For{$j=1,...,M$}{
+
+   Set $\mathcal{A}=\varnothing$ and $t=0$;
+
+    \ForEach{unmatched object $b^g_k$ in $\mathcal{B}$}{
+
+       \If{$\textrm{IOU}(b_j,b_k^g)\geq\varepsilon$ and $\textrm{IOU}(b_j,b_k^g)>t$}
+   {
+
+      $\mathcal{A}=\{b^g_k\}$;
+
+      $t=\textrm{IOU}(b_j,b_k^g)$;
+
+    }
+    }
+    \If{$\mathcal{A}\neq\varnothing$}{
+
+    Set $\textbf{\emph{a}}(i)=1$ since object prediction $(b_j,p_j)$ is a TP;
+
+    Remove the matched GT box in $\mathcal{A}$ from $\mathcal{B}$, $\mathcal{B}=\mathcal{B}-\mathcal{A}$.
+
+    }
+
+    }
+  \caption{The algorithm for greedily matching object detection results (for an object category) to ground truth boxes.}
+\end{algorithm}
+
+\section{Acknowledgments}
+\label{sec:acknowledgments}
+
+
+
+\bibliographystyle{IEEEtran}
+\bibliography{IEEEabrv,lilibib}
+
+\end{document}
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
